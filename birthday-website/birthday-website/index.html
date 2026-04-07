@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+
+<!-- =====================================================
+     GOOGLE FONTS — elegant serif + soft script pairing
+     ===================================================== -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================
+   CSS VARIABLES — edit colours here
+   ===================================================== -->*/
+:root {
+  --pink:       #f9c4d2;
+  --pink-deep:  #f48fb1;
+  --lavender:   #d8b4fe;
+  --lav-deep:   #a78bfa;
+  --white:      #fefcff;
+  --glass:      rgba(255,255,255,0.35);
+  --glass-b:    rgba(255,255,255,0.18);
+  --shadow:     0 8px 32px rgba(180,120,160,0.18);
+  --glow:       0 0 24px rgba(244,143,177,0.55);
+  --text-dark:  #5a3650;
+  --text-mid:   #7e5a74;
+  --text-light: #b086a4;
+  --radius:     20px;
+  --transition: 0.6s cubic-bezier(.4,0,.2,1);
+}
+
+/* =====================================================
+   RESET & BASE
+   ===================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 40%, #ede7f6 100%);
+  min-height: 100vh;
+  color: var(--text-dark);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* =====================================================
+   FLOATING HEARTS BACKGROUND (continuous, layered)
+   ===================================================== */
+#hearts-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =====================================================
+   CONFETTI CANVAS
+   ===================================================== */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* =====================================================
+   SECTION WRAPPER
+   ===================================================== */
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: none;           /* hidden by default */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 60px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+.page.active {
+  display: flex;
+}
+.page.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================================
+   GLASS CARD
+   ===================================================== */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1.5px solid rgba(255,255,255,0.55);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 48px 44px;
+  max-width: 560px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: -60px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,196,210,0.45) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* =====================================================
+   TYPOGRAPHY
+   ===================================================== */
+.script {
+  font-family: 'Great Vibes', cursive;
+  color: var(--pink-deep);
+  line-height: 1.2;
+}
+.serif { font-family: 'Cormorant Garamond', serif; }
+
+h1.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--text-mid);
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 32px;
+  letter-spacing: 0.03em;
+}
+
+/* =====================================================
+   INPUT FORM (Step 1)
+   ===================================================== */
+.form-group {
+  margin-bottom: 22px;
+  position: relative;
+}
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.form-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid rgba(215,150,185,0.35);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.6);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus {
+  border-color: var(--pink-deep);
+  box-shadow: 0 0 0 3px rgba(244,143,177,0.18);
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 42px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--pink-deep) 0%, var(--lav-deep) 100%);
+  color: #fff;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(244,143,177,0.4);
+  transition: transform 0.25s, box-shadow 0.25s;
+  margin-top: 8px;
+}
+.btn:hover {
+  transform: scale(1.06);
+  box-shadow: var(--glow), 0 8px 28px rgba(167,139,250,0.4);
+}
+.btn:active { transform: scale(0.98); }
+.btn-wrap { text-align: center; margin-top: 28px; }
+
+/* =====================================================
+   PHOTO GRID
+   ===================================================== */
+.photo-grid {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.photo-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.photo-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.photo-item {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 4px 18px rgba(180,100,140,0.18);
+  transition: transform 0.35s, box-shadow 0.35s;
+}
+.photo-item:hover {
+  transform: scale(1.04) rotate(-1deg);
+  box-shadow: 0 10px 32px rgba(180,100,140,0.28);
+}
+.photo-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Placeholder when no real image is supplied */
+.photo-item .placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fce4ec, #ede7f6);
+  color: var(--text-light);
+  font-size: 2rem;
+  gap: 6px;
+}
+.photo-item .placeholder span {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   MESSAGE BLOCK
+   ===================================================== */
+.message-block {
+  background: var(--glass-b);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 14px;
+  padding: 22px 26px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.12rem;
+  line-height: 1.75;
+  color: var(--text-dark);
+  font-style: italic;
+  margin-bottom: 10px;
+  position: relative;
+}
+.message-block::before {
+  content: '\201C';
+  position: absolute;
+  top: 6px; left: 14px;
+  font-size: 3rem;
+  color: var(--pink-deep);
+  opacity: 0.4;
+  line-height: 1;
+  font-family: 'Great Vibes', cursive;
+}
+
+/* =====================================================
+   FINAL BIRTHDAY SCREEN
+   ===================================================== */
+#page-final .big-wish {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 10vw, 6rem);
+  text-align: center;
+  background: linear-gradient(135deg, var(--pink-deep), var(--lav-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glowPulse 2.5s ease-in-out infinite alternate;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+@keyframes glowPulse {
+  from { filter: drop-shadow(0 0 6px rgba(244,143,177,0.4)); }
+  to   { filter: drop-shadow(0 0 22px rgba(167,139,250,0.8)); }
+}
+#page-final .final-card {
+  max-width: 660px;
+}
+#typing-text {
+  min-height: 110px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-mid);
+  text-align: center;
+  font-style: italic;
+  margin: 18px 0;
+}
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--pink-deep);
+  animation: blink 0.7s step-end infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.final-photo {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 4/3;
+  border-radius: 18px;
+  overflow: hidden;
+  margin: 10px auto 0;
+  box-shadow: 0 8px 36px rgba(180,100,140,0.28);
+}
+.final-photo img { width: 100%; height: 100%; object-fit: cover; }
+.final-photo .placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #fce4ec, #ede7f6);
+  color: var(--text-light);
+  font-size: 3rem;
+  gap: 8px;
+}
+.final-photo .placeholder span {
+  font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* =====================================================
+   PROGRESS DOTS
+   ===================================================== */
+#progress-dots {
+  position: fixed;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 100;
+}
+.dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: rgba(244,143,177,0.3);
+  border: 1.5px solid rgba(244,143,177,0.6);
+  transition: background 0.4s, transform 0.4s;
+  cursor: pointer;
+}
+.dot.active {
+  background: var(--pink-deep);
+  transform: scale(1.4);
+}
+
+/* =====================================================
+   MUSIC BUTTON
+   ===================================================== */
+#music-btn {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s;
+}
+#music-btn:hover { transform: scale(1.1); }
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (max-width: 600px) {
+  .card { padding: 30px 22px; }
+  .photo-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+  #progress-dots { display: none; }
+}
+
+/* =====================================================
+   DECORATIVE SPARKLES (CSS only)
+   ===================================================== */
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1rem;
+  animation: sparkleFloat 4s ease-in-out infinite;
+  opacity: 0.5;
+}
+@keyframes sparkleFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+  50%       { transform: translateY(-14px) rotate(20deg); opacity: 0.9; }
+}
+
+/* Step badge */
+.step-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 18px;
+  font-family: 'Jost', sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!-- =====================================================
+     BACKGROUND CANVASES
+     ===================================================== -->
+<canvas id="hearts-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- =====================================================
+     PROGRESS DOTS NAV
+     ===================================================== -->
+<div id="progress-dots">
+  <div class="dot active" data-step="0"></div>
+  <div class="dot" data-step="1"></div>
+  <div class="dot" data-step="2"></div>
+  <div class="dot" data-step="3"></div>
+  <div class="dot" data-step="4"></div>
+  <div class="dot" data-step="5"></div>
+</div>
+
+<!-- =====================================================
+     MUSIC TOGGLE
+     ===================================================== -->
+<button id="music-btn" title="Toggle music">🎵</button>
+<!-- 
+  ════════════════════════════════════════════
+  🎵 BACKGROUND MUSIC — ADD YOUR OWN AUDIO FILE
+  ════════════════════════════════════════════
+  Replace the src below with a path to your
+  soft instrumental .mp3 file, e.g.:
+    <source src="music/birthday-song.mp3" type="audio/mpeg">
+  ════════════════════════════════════════════
+-->
+<audio id="bg-music" loop>
+  <source src="music/YOUR_MUSIC_FILE.mp3" type="audio/mpeg">
+</audio>
+
+<!-- =====================================================
+     PAGE 0 — INPUT FORM
+     ===================================================== -->
+<section class="page active" id="page-0">
+  <div class="card">
+    <!-- Decorative sparkles -->
+    <span class="sparkle" style="top:12px;right:20px;animation-delay:0s">✦</span>
+    <span class="sparkle" style="bottom:18px;left:16px;animation-delay:1.2s">✦</span>
+
+    <p class="step-badge">A surprise awaits you ✨</p>
+    <h1 class="section-title">Hello Baby!...</h1>
+    <p class="section-sub">Tell us a little about yourself</p>
+
+    <div class="form-group">
+      <label for="input-name">Your Name</label>
+      <input type="text" id="input-name" placeholder="Please enter your name" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label for="input-dob">Date of Birth</label>
+      <input type="date" id="input-dob">
+    </div>
+    <div class="btn-wrap">
+      <button class="btn" onclick="submitForm()">
+        Open Your Surprise &nbsp;💌
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     PAGE 1 — FROM YOUR BROTHERS
+     ===================================================== -->
+<section class="page" id="page-1">
+  <div class="card" style="max-width:620px">
+    <span class="sparkle" style="top:14px;right:22px;animation-delay:0.5s">✦</span>
+
+    <p class="step-badge">Chapter One</p>
+    <h1 class="section-title">From Your Daughter</h1>
+    <p class="section-sub">With all my love</p>
+
+    <!--
+      ════════════════════════════════════════════
+      📸 BROTHERS PHOTOS — REPLACE THESE IMAGES
+      ════════════════════════════════════════════
+      Replace src values with your real photo paths.
+      Example: src="photos/brothers/photo1.jpg"
+      You can add/remove <div class="photo-item"> blocks.
+      ════════════════════════════════════════════
+    -->
+    <div class="photo-grid cols-3">
+  <div class="photo-item">
+    <img src="photos/brothers/photo1.jpg" alt="">
+  </div>
+  <div class="photo-item">
+    <img src="photos/brothers/photo3.jpg" alt="">
+  </div>
+  <div class="photo-item">
+    <img src="photos/brothers/photo2.jpg" alt="">
+  </div>
+</div>
+
+    <!--
+      ════════════════════════════════════════════
+      ✍️  BROTHERS MESSAGE — EDIT THIS TEXT
+      ════════════════════════════════════════════
+    -->
+    <div class="message-block">
+      When I was younger, I didn’t truly understand how much you meant to my life. I didn't have my love for you the way I did for Dad, and I didn’t realize the depth of your care and sacrifices. It was a time when I didn’t fully recognize your value, yet you never stopped loving me or fulfilling my every wish. Even when I couldn’t see it, your love was always there—quiet, constant, and unconditional. Looking back now, I realize how much I took for granted, and how deeply blessed I am to have you in my life.♥️
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn" onclick="goTo(2)">Continue &nbsp;→</button>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     PAGE 2 — FROM YOUR FIRST DAUGHTER
+     ===================================================== -->
+<section class="page" id="page-2">
+  <div class="card" style="max-width:620px">
+    <span class="sparkle" style="top:14px;right:22px;animation-delay:0.3s">✦</span>
+
+    <p class="step-badge">Chapter Two</p>
+    <h1 class="section-title">From Your Best Friend</h1>
+    <p class="section-sub">A True friend forever in your life</p>
+
+    <!--
+      ════════════════════════════════════════════
+      📸 FIRST DAUGHTER PHOTOS — REPLACE THESE
+      ════════════════════════════════════════════
+    -->
+    <div class="photo-grid cols-2">
+      <div class="photo-item">
+        <img src="photos/daughter1/photo1.jpg" alt=""> 
+      </div>
+      <div class="photo-item">
+        <img src="photos/daughter1/photo2.jpg" alt="">
+      </div>
+    </div>
+
+    <!--
+      ════════════════════════════════════════════
+      ✍️  FIRST DAUGHTER MESSAGE — EDIT THIS TEXT
+      ════════════════════════════════════════════
+    -->
+    <div class="message-block">
+      At this stage of my life, I have truly come to understand who you are and the countless sacrifices you have made for us. I now realize the strength behind your smile and the struggles you silently endured. I want you to know that you can share anything with me—no matter what it is, I will always be there for you in every situation. You are not just my mother, but also my best friend, my comfort, and my greatest support. I may not have understood it before, but today I see everything clearly, and I love you more than words can express♥️
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn" onclick="goTo(3)">Continue &nbsp;→</button>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     PAGE 3 — FROM YOUR SECOND DAUGHTER
+     ===================================================== -->
+<section class="page" id="page-3">
+  <div class="card" style="max-width:620px">
+    <span class="sparkle" style="top:14px;right:22px;animation-delay:0.8s">✦</span>
+
+    <p class="step-badge">Chapter Three</p>
+    <h1 class="section-title">From Your Second Daughter</h1>
+    <p class="section-sub">Twin stars from the same heart</p>
+
+    <!--
+      ════════════════════════════════════════════
+      📸 SECOND DAUGHTER PHOTOS — REPLACE THESE
+      ════════════════════════════════════════════
+    -->
+    <div class="photo-grid cols-2">
+      <div class="photo-item">
+        <img src="photos/daughter2/photo1.jpg" alt="">
+      </div>
+      <div class="photo-item">
+        <img src="photos/daughter2/photo2.jpg" alt="">
+      </div>
+    </div>
+
+    <!--
+      ════════════════════════════════════════════
+      ✍️  SECOND DAUGHTER MESSAGE — EDIT THIS TEXT
+      ════════════════════════════════════════════
+    -->
+    <div class="message-block">
+      You are the reason I believe in unconditional love. 
+      You gave me a home not just inside four walls, but inside your heart. 
+      On this beautiful day, I want you to know: 
+      everything good I am, I learned it by watching you. 
+      Happy birthday, my beautiful mother. 💜
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn" onclick="goTo(4)">Continue &nbsp;→</button>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     PAGE 4 — FROM YOUR SON
+     ===================================================== -->
+<section class="page" id="page-4">
+  <div class="card" style="max-width:620px">
+    <span class="sparkle" style="top:14px;right:22px;animation-delay:0.6s">✦</span>
+
+    <p class="step-badge">Chapter Four</p>
+    <h1 class="section-title">From Your Son</h1>
+    <p class="section-sub">A son's love — quiet but boundless</p>
+
+    <!--
+      ════════════════════════════════════════════
+      📸 SON PHOTOS — REPLACE THESE
+      ════════════════════════════════════════════
+    -->
+    <div class="photo-grid cols-2">
+      <div class="photo-item">
+        <img src="photos/son/photo1.jpg" alt="">
+      </div>
+      <div class="photo-item">
+       <img src="photos/son/photo2.jpg" alt=""> 
+      </div>
+    </div>
+
+    <!--
+      ════════════════════════════════════════════
+      ✍️  SON MESSAGE — EDIT THIS TEXT
+      ════════════════════════════════════════════
+    -->
+    <div class="message-block">
+      Mama, I don't always find the perfect words, but I hope you feel it every day — 
+      how much you mean to me. You sacrificed silently, loved loudly, and never gave up. 
+      Today is yours. You deserve every single moment of happiness. 
+      I love you. Always. 💙
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn" onclick="goTo(5)">The Final Surprise &nbsp;🎁</button>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     PAGE 5 — FINAL BIRTHDAY SCREEN
+     ===================================================== -->
+<section class="page" id="page-final">
+
+  <div class="card final-card">
+    <span class="sparkle" style="top:14px;right:22px;animation-delay:0s">✦</span>
+    <span class="sparkle" style="bottom:20px;left:18px;animation-delay:1.5s">✦</span>
+    <span class="sparkle" style="top:60%;right:12px;animation-delay:0.7s">✦</span>
+
+    <!-- 🎂 FINAL BIRTHDAY MESSAGE — NAME IS INJECTED BY JS -->
+    <div class="big-wish" id="final-wish">Happy Birthday!</div>
+
+    <!--
+      ════════════════════════════════════════════
+      ✍️  FINAL EMOTIONAL PARAGRAPH — EDIT THIS
+      ════════════════════════════════════════════
+      This text is typed character-by-character.
+      Edit the variable "finalMessage" in the
+      <script> section below.
+      ════════════════════════════════════════════
+    -->
+    <div id="typing-text"><span class="cursor"></span></div>
+
+    <!--
+      ════════════════════════════════════════════
+      📸 FINAL PHOTO — REPLACE THIS
+      ════════════════════════════════════════════
+    -->
+    <div class="final-photo">
+      <img src="photos/final/special.jpg" alt="A special memory"> 
+    </div>
+
+    <div class="btn-wrap" style="margin-top:28px">
+      <button class="btn" onclick="restartConfetti()">🎊 Celebrate Again!</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+<script>
+/* ─── STATE ─────────────────────────────────────────── */
+let currentStep = 0;
+let personName  = '';
+let musicPlaying = false;
+const totalSteps = 6; // 0–5
+
+/* ─── PAGES MAP ──────────────────────────────────────── */
+const pages = [
+  document.getElementById('page-0'),
+  document.getElementById('page-1'),
+  document.getElementById('page-2'),
+  document.getElementById('page-3'),
+  document.getElementById('page-4'),
+  document.getElementById('page-final'),
+];
+
+/* ─── INIT FIRST PAGE ────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  showPage(0);
+  startHearts();
+  updateDots(0);
+});
+
+/* ─── FORM SUBMIT ────────────────────────────────────── */
+function submitForm() {
+  const nameInput = document.getElementById('input-name');
+  const dobInput  = document.getElementById('input-dob');
+
+  if (!nameInput.value.trim()) {
+    nameInput.focus();
+    nameInput.style.borderColor = '#f48fb1';
+    setTimeout(() => nameInput.style.borderColor = '', 1500);
+    return;
+  }
+
+  personName = nameInput.value.trim();
+  goTo(1);
+
+  // Try to play music on first interaction
+  tryPlayMusic();
+}
+
+/* ─── PAGE NAVIGATION ────────────────────────────────── */
+function goTo(stepIndex) {
+  // Hide current
+  const prev = pages[currentStep];
+  if (prev) {
+    prev.classList.remove('visible');
+    setTimeout(() => prev.classList.remove('active'), 450);
+  }
+
+  // Show next
+  currentStep = stepIndex;
+  const next = pages[currentStep];
+  if (next) {
+    next.classList.add('active');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => next.classList.add('visible'));
+    });
+  }
+
+  updateDots(currentStep);
+
+  // Final step special effects
+  if (currentStep === 5) {
+    document.getElementById('final-wish').textContent = 'Happy Birthday, ' + personName + '!';
+    setTimeout(startTyping, 600);
+    setTimeout(launchConfetti, 400);
+  }
+}
+
+function showPage(i) {
+  pages[i].classList.add('active');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => pages[i].classList.add('visible'));
+  });
+}
+
+/* ─── PROGRESS DOTS ──────────────────────────────────── */
+function updateDots(i) {
+  document.querySelectorAll('.dot').forEach((d, idx) => {
+    d.classList.toggle('active', idx === i);
+  });
+}
+document.querySelectorAll('.dot').forEach(d => {
+  d.addEventListener('click', () => {
+    if (currentStep === 0) return; // must fill form first
+    goTo(parseInt(d.dataset.step));
+  });
+});
+
+/* ─────────────────────────────────────────────────────────
+   TYPING EFFECT
+   ─────────────────────────────────────────────────────── */
+/*
+  ════════════════════════════════════════════
+  ✍️  FINAL TYPING PARAGRAPH — EDIT THIS TEXT
+  ════════════════════════════════════════════
+*/
+const finalMessage =
+  "Today the universe pauses to celebrate you — a soul that has filled every room with warmth, " +
+  "every heart with love, and every moment with meaning. " +
+  "You are not just a year older; you are a year more beautiful, more wise, more irreplaceable. " +
+  "May this birthday be the beginning of the most joyful chapter you have ever known. " +
+  "We love you more than all the stars in the sky." + "Many more happy returns of the day mummy.🌟";
+
+let typingIndex = 0;
+let typingInterval = null;
+
+function startTyping() {
+  const container = document.getElementById('typing-text');
+  container.innerHTML = '<span class="cursor"></span>';
+  typingIndex = 0;
+
+  typingInterval = setInterval(() => {
+    if (typingIndex < finalMessage.length) {
+      const cursor = container.querySelector('.cursor');
+      cursor.insertAdjacentText('beforebegin', finalMessage[typingIndex]);
+      typingIndex++;
+    } else {
+      clearInterval(typingInterval);
+    }
+  }, 42);
+}
+
+/* ─────────────────────────────────────────────────────────
+   FLOATING HEARTS (Canvas)
+   ─────────────────────────────────────────────────────── */
+function startHearts() {
+  const canvas = document.getElementById('hearts-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  let hearts = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const heartColors = [
+    'rgba(249,196,210,', // pink
+    'rgba(244,143,177,', // deep pink
+    'rgba(216,180,254,', // lavender
+    'rgba(167,139,250,', // deep lav
+    'rgba(255,255,255,', // white
+  ];
+
+  function spawnHeart() {
+    const size = 10 + Math.random() * 22;
+    hearts.push({
+      x:     Math.random() * canvas.width,
+      y:     canvas.height + size,
+      size,
+      speed: 0.6 + Math.random() * 1.2,
+      sway:  (Math.random() - 0.5) * 1.5,
+      angle: Math.random() * Math.PI * 2,
+      angleSpeed: (Math.random() - 0.5) * 0.03,
+      opacity: 0.15 + Math.random() * 0.45,
+      color: heartColors[Math.floor(Math.random() * heartColors.length)],
+    });
+  }
+
+  function drawHeart(ctx, x, y, size, color, opacity) {
+    ctx.save();
+    ctx.fillStyle = color + opacity + ')';
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x, y - size * 0.3, x - size * 0.5, y - size * 0.6, x - size * 0.5, y - size * 0.85);
+    ctx.arc(x - size * 0.25, y - size * 0.85, size * 0.25, Math.PI, 0, false);
+    ctx.arc(x + size * 0.25, y - size * 0.85, size * 0.25, Math.PI, 0, false);
+    ctx.bezierCurveTo(x + size * 0.5, y - size * 0.6, x, y - size * 0.3, x, y);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Spawn hearts periodically
+  setInterval(spawnHeart, 550);
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    hearts = hearts.filter(h => h.y + h.size > -10);
+
+    hearts.forEach(h => {
+      h.y     -= h.speed;
+      h.x     += Math.sin(h.angle) * h.sway;
+      h.angle += h.angleSpeed;
+      drawHeart(ctx, h.x, h.y, h.size, h.color, h.opacity);
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+/* ─────────────────────────────────────────────────────────
+   CONFETTI (Canvas)
+   ─────────────────────────────────────────────────────── */
+let confettiParticles = [];
+let confettiActive    = false;
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  const colors = ['#f9c4d2','#f48fb1','#d8b4fe','#a78bfa','#fce4ec','#fff','#fbcfe8','#c084fc'];
+  confettiParticles = [];
+
+  for (let i = 0; i < 180; i++) {
+    confettiParticles.push({
+      x:       Math.random() * canvas.width,
+      y:       Math.random() * canvas.height - canvas.height,
+      w:       6 + Math.random() * 8,
+      h:       3 + Math.random() * 5,
+      color:   colors[Math.floor(Math.random() * colors.length)],
+      speed:   2 + Math.random() * 3.5,
+      angle:   Math.random() * Math.PI * 2,
+      spin:    (Math.random() - 0.5) * 0.2,
+      drift:   (Math.random() - 0.5) * 1.5,
+      opacity: 0.8 + Math.random() * 0.2,
+    });
+  }
+
+  confettiActive = true;
+  animateConfetti();
+}
+
+function animateConfetti() {
+  if (!confettiActive) return;
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  let alive = 0;
+  confettiParticles.forEach(p => {
+    if (p.y < canvas.height + 20) {
+      alive++;
+      p.y     += p.speed;
+      p.x     += p.drift;
+      p.angle += p.spin;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle   = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    }
+  });
+
+  if (alive > 0) {
+    requestAnimationFrame(animateConfetti);
+  } else {
+    confettiActive = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function restartConfetti() {
+  launchConfetti();
+}
+
+/* ─────────────────────────────────────────────────────────
+   MUSIC TOGGLE
+   ─────────────────────────────────────────────────────── */
+const audio     = document.getElementById('bg-music');
+const musicBtn  = document.getElementById('music-btn');
+
+musicBtn.addEventListener('click', () => {
+  if (musicPlaying) {
+    audio.pause();
+    musicBtn.textContent = '🎵';
+    musicPlaying = false;
+  } else {
+    audio.play().catch(() => {});
+    musicBtn.textContent = '🔇';
+    musicPlaying = true;
+  }
+});
+
+function tryPlayMusic() {
+  if (audio.src && !musicPlaying) {
+    audio.play().then(() => {
+      musicPlaying = true;
+      musicBtn.textContent = '🔇';
+    }).catch(() => {});
+  }
+}
+</script>
+</body>
+</html>
